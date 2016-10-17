@@ -28,7 +28,7 @@ public class MainViewModel extends BaseObservable {
 
 	public void setUsername(String username) {
 		this.username = username;
-		notifyPropertyChanged(BR.password);
+		notifyPropertyChanged(BR.username);
 	}
 
 
