@@ -2,32 +2,27 @@ package com.v3n3.databinding.sample;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.v3n3.databinding.sample.databinding.ActivityMainBinding;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainScene {
 	ActivityMainBinding binding;
+	MainViewModel viewModel;
+	MainPresenter presenter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		viewModel = new MainViewModel();
+		presenter = new MainPresenter(this);
 		binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+		binding.setModel(viewModel);
+		binding.setPresenter(presenter);
 		setSupportActionBar(binding.toolbar);
-
-		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-		fab.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-						.setAction("Action", null).show();
-			}
-		});
 	}
 
 	@Override
@@ -50,5 +45,22 @@ public class MainActivity extends AppCompatActivity {
 		}
 
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void notifySendingToServer() {
+		binding.usernameLayout.setError("");
+		binding.passwordLayout.setError("");
+		Snackbar.make(binding.getRoot(), R.string.sending_request, Snackbar.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public void notifyErrorInData() {
+		if (!presenter.isValidField(viewModel.getUsername())) {
+			binding.usernameLayout.setError(getString(R.string.error_username));
+		}
+		if (!presenter.isValidField(viewModel.getPassword())) {
+			binding.passwordLayout.setError(getString(R.string.error_password));
+		}
 	}
 }

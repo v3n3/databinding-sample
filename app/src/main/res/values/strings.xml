@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Sample</string>
     <string name="action_settings">Settings</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="sending_request">Sending the request to the server</string>
+    <string name="error_username">Invalid Username</string>
+    <string name="error_password">Invalid Password</string>
 </resources>
